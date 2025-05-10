@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>URL Shortener</title>
+</head>
+<body>
+  <h1>Shorten Your URL</h1>
+  <input type="text" id="longUrl" placeholder="Enter long URL">
+  <button onclick="shortenUrl()">Shorten</button>
+  <div id="result"></div>
+
+  <script>
+    async function shortenUrl() {
+      const longUrl = document.getElementById('longUrl').value;
+      const response = await fetch('/.netlify/functions/shorten', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ originalUrl: longUrl }),
+      });
+      const data = await response.json();
+      document.getElementById('result').innerText = data.shortUrl || data.error;
+    }
+  </script>
+</body>
+</html>
